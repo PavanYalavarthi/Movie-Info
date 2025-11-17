@@ -25,6 +25,8 @@ class MovieInfoRepositoryTest {
     void setUp() {
         List<MovieInfo> movieInfos = List.of(
                 new MovieInfo(null, "Bahubali - The Beginning", List.of("Prabhas", "Anushka", "Rana"), LocalDate.parse("2015-07-10")),
+                new MovieInfo(null, "Srimanthudu", List.of("Mahesh Babu", "Sruthi Hassan"), LocalDate.parse("2015-08-07")),
+                new MovieInfo(null, "Temper", List.of("NTR", "Kajal Agarwal"), LocalDate.parse("2015-02-13")),
                 new MovieInfo(null, "Bahubali - The Conclusion", List.of("Prabhas", "Anushka", "Rana"), LocalDate.parse("2017-04-28")),
                 new MovieInfo("Epic", "Bahubali - The Epic", List.of("Prabhas", "Anushka", "Rana"), LocalDate.parse("2025-10-31"))
         );
@@ -41,7 +43,7 @@ class MovieInfoRepositoryTest {
         var result = movieInfoRepository.findAll();
 
         StepVerifier.create(result)
-                .expectNextCount(3)
+                .expectNextCount(5)
                 .verifyComplete();
 
     }
@@ -51,9 +53,7 @@ class MovieInfoRepositoryTest {
         var result = movieInfoRepository.findById("Epic");
 
         StepVerifier.create(result)
-                .assertNext(movieInfo -> {
-                    assertEquals("Bahubali - The Epic", movieInfo.getTitle());
-                })
+                .assertNext(movieInfo -> assertEquals("Bahubali - The Epic", movieInfo.getTitle()))
                 .verifyComplete();
 
     }
@@ -80,9 +80,7 @@ class MovieInfoRepositoryTest {
         var result = movieInfoRepository.save(epicMovie);
 
         StepVerifier.create(result)
-                .assertNext(movieInfo -> {
-                    assertEquals(2025, movieInfo.getReleaseDate().getYear());
-                })
+                .assertNext(movieInfo -> assertEquals(2025, movieInfo.getReleaseDate().getYear()))
                 .verifyComplete();
 
     }
@@ -93,8 +91,19 @@ class MovieInfoRepositoryTest {
         var result = movieInfoRepository.findAll();
 
         StepVerifier.create(result)
-                .expectNextCount(2)
+                .expectNextCount(4)
                 .verifyComplete();
 
+    }
+
+    @Test
+    void findByReleaseDateBetween() {
+        int year = 2015;
+        LocalDate startDate = LocalDate.of(year,1,1), endDate = LocalDate.of(year,12,31);
+        var result = movieInfoRepository.findByReleaseDateBetween(startDate, endDate);
+
+        StepVerifier.create(result)
+                .expectNextCount(3)
+                .verifyComplete();
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 @Service
 public class MovieInfoService {
 
@@ -39,5 +41,10 @@ public class MovieInfoService {
 
     public Mono<Void> deleteMovieInfoById(String id) {
         return movieInfoRepository.deleteById(id);
+    }
+
+    public Flux<MovieInfo> getAllMovieInfosByYear(Integer year) {
+        LocalDate startDate = LocalDate.of(year, 1, 1), endDate = LocalDate.of(year, 12, 31);
+        return movieInfoRepository.findByReleaseDateBetween(startDate, endDate);
     }
 }
