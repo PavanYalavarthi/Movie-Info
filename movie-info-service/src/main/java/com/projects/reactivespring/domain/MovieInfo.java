@@ -1,5 +1,6 @@
 package com.projects.reactivespring.domain;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,8 @@ import java.util.List;
 public class MovieInfo {
     @Id
     private String id;
+    @NotBlank(message = "Title needed to be present")
     private String title;
-    private List<String> cast;
+    private List<@NotBlank(message = "Cast can't be blank") String> cast;
     private LocalDate releaseDate;
 }

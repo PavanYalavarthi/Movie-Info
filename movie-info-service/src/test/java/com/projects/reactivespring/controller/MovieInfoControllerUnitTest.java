@@ -93,4 +93,26 @@ class MovieInfoControllerUnitTest {
                     assertEquals("mockId", body.getId());
                 });
     }
+
+    @Test
+    void addMovieInfo_Validation() {
+        var newMovieInfo = new MovieInfo(null, "", List.of("Mahesh babu", "Priyanka Jonas"), LocalDate.parse("2027-05-28"));
+        when(movieInfoService
+                .addMovieInfo(isA(MovieInfo.class)))
+                .thenReturn(Mono.just(
+                        new MovieInfo("mockId", "Varanasi", List.of("Mahesh babu", "Priyanka Jonas"), LocalDate.parse("2027-05-28"))
+                ));
+
+        webTestClient.post()
+                .uri("/v1/movieinfo")
+                .bodyValue(newMovieInfo)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(String.class)
+                .consumeWith(response -> {
+                    var body = response.getResponseBody();
+                    assertEquals("Title needed to be present", body);
+                });
+
+    }
 }

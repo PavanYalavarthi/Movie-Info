@@ -2,6 +2,7 @@ package com.projects.reactivespring.controller;
 
 import com.projects.reactivespring.domain.MovieInfo;
 import com.projects.reactivespring.service.MovieInfoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -19,7 +20,7 @@ public class MovieInfoController {
 
     @PostMapping("/movieinfo")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<MovieInfo> addMovieInfo(@RequestBody MovieInfo movieInfo) {
+    public Mono<MovieInfo> addMovieInfo(@RequestBody @Valid MovieInfo movieInfo) {
         return movieInfoService.addMovieInfo(movieInfo);
     }
 
@@ -35,7 +36,7 @@ public class MovieInfoController {
 
     @PostMapping("/movieinfo/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<MovieInfo> updateMovieInfoById(@PathVariable String id, @RequestBody MovieInfo movieInfo) {
+    public Mono<MovieInfo> updateMovieInfoById(@PathVariable String id, @RequestBody @Valid MovieInfo movieInfo) {
         return movieInfoService.updateMovieInfoById(id, movieInfo);
     }
 
