@@ -1,3 +1,4 @@
 rootProject.name = 'movies-info'
 
 include 'movie-info-service'
+include 'movie-review-service'
